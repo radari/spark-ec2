@@ -25,11 +25,13 @@ if [[ $instance_type == r3* ]]; then
 
   rm -rf /mnt*
   mkdir /mnt
+  echo '/dev/sdb /mnt  ext4  defaults,noatime,nodiratime,discard 0 0' >> /etc/fstab
   mkfs.xfs /dev/sdb
-  mount -o $XFS_MOUNT_OPTS /dev/sdb /mnt
+  mount /dev/sdb
 
   if [[ $instance_type == "r3.8xlarge" ]]; then
     mkdir /mnt2
+    echo '/dev/sdc /mnt2  ext4  defaults,noatime,nodiratime,discard 0 0' >> /etc/fstab
     mkfs.xfs /dev/sdc
     mount -o $XFS_MOUNT_OPTS /dev/sdc /mnt2
   fi
