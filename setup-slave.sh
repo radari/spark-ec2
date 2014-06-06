@@ -21,19 +21,19 @@ XFS_MOUNT_OPTS="defaults,noatime,nodiratime,allocsize=8m"
 # Work around for R3 instances without pre-formatted ext3 disks
 instance_type=$(curl http://169.254.169.254/latest/meta-data/instance-type 2> /dev/null)
 if [[ $instance_type == r3* ]]; then
-  yum install -y xfsprogs
+  EXT4_MOUNT_OPTS="defaults,noatime,nodiratime"
 
   rm -rf /mnt*
   mkdir /mnt
-  echo '/dev/sdb /mnt  ext4  defaults,noatime,nodiratime,discard 0 0' >> /etc/fstab
-  mkfs.xfs /dev/sdb
-  mount /dev/sdb
+  #echo '/dev/sdb /mnt  ext4  defaults,noatime,nodiratime,discard 0 0' >> /etc/fstab
+  mkfs.ext4 -E lazy_itable_init=0,lazy_journal_init=0 /dev/sdb
+  mount -o $EXT4_MOUNT_OPTS /dev/sdb /mnt
 
   if [[ $instance_type == "r3.8xlarge" ]]; then
     mkdir /mnt2
-    echo '/dev/sdc /mnt2  ext4  defaults,noatime,nodiratime,discard 0 0' >> /etc/fstab
-    mkfs.xfs /dev/sdc
-    mount -o $XFS_MOUNT_OPTS /dev/sdc /mnt2
+    #echo '/dev/sdc /mnt2  ext4  defaults,noatime,nodiratime,discard 0 0' >> /etc/fstab
+    mkfs.ext4 -E lazy_itable_init=0,lazy_journal_init=0 /dev/sdc
+    mount -o $EXT4_MOUNT_OPTS /dev/sdc /mnt2
   fi
 fi
 
