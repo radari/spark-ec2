@@ -92,7 +92,7 @@ chmod -R a+w /mnt*
 rm -f /root/.ssh/known_hosts
 
 # Create swap space on /mnt
-/root/spark-ec2/create-swap.sh $SWAP_MB
+#/root/spark-ec2/create-swap.sh $SWAP_MB
 
 # Allow memory to be over committed. Helps in pyspark where we fork
 echo 1 > /proc/sys/vm/overcommit_memory
