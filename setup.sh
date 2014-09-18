@@ -102,12 +102,6 @@ for node in $SLAVES $OTHER_MASTERS; do
 done
 wait
 
-# Always include 'scala' module if it's not defined as a work around
-# for older versions of the scripts.
-if [[ ! $MODULES =~ *scala* ]]; then
-  MODULES=$(printf "%s\n%s\n" "scala" $MODULES)
-fi
-
 # Install / Init module
 for module in $MODULES; do
   echo "Initializing $module"
