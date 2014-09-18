@@ -16,11 +16,7 @@ ln -s /mnt/ganglia/rrds /var/lib/ganglia/rrds
 /root/spark-ec2/copy-dir /etc/ganglia/
 
 # Start gmond everywhere
-/etc/init.d/gmond restart
-
-for node in $SLAVES $OTHER_MASTERS; do
-  ssh -t -t $SSH_OPTS root@$node "/etc/init.d/gmond restart"
-done
+/root/spark-ec2/pssh.sh "/etc/init.d/gmond restart"
 
 # gmeta needs rrds to be owned by nobody
 chown -R ganglia:ganglia /var/lib/ganglia/rrds
@@ -28,8 +24,6 @@ chown -R ganglia:ganglia /mnt/ganglia/rrds
 # cluster-wide aggregates only show up with this. TODO: Fix this cleanly ?
 ln -s /usr/share/ganglia/conf/default.json /var/lib/ganglia/conf/
 
-
 /etc/init.d/gmetad restart
 /etc/init.d/gmond restart
-/root/spark-ec2/pssh.sh "/etc/init.d/gmond restart"
 /etc/init.d/httpd restart
