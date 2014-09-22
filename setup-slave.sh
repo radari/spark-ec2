@@ -27,6 +27,9 @@ function setup_ext4_volume {
   mount -o "defaults,noatime,nodiratime" $device $mount_point
 }
 
+# Work around for R3 instances without pre-formatted ext3 disks
+instance_type=$(curl http://169.254.169.254/latest/meta-data/instance-type 2> /dev/null)
+
 if [[ $instance_type == r3* ]]; then
   setup_ext4_volume /dev/sdb /mnt
   setup_ext4_volume /dev/sdc /mnt2
