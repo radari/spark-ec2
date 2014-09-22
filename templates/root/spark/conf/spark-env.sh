@@ -5,8 +5,8 @@ export SPARK_LOCAL_DIRS="{{spark_local_dirs}}"
 # Standalone cluster options
 export SPARK_MASTER_OPTS="{{spark_master_opts}}"
 export SPARK_WORKER_INSTANCES=1
-export SPARK_WORKER_CORES=32
-export SPARK_WORKER_MEMORY=80g
+export SPARK_WORKER_CORES=16
+export SPARK_WORKER_MEMORY=40g
 
 export HADOOP_HOME="/root/ephemeral-hdfs"
 export SPARK_MASTER_IP={{active_master}}
