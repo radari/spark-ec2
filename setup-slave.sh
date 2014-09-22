@@ -31,19 +31,21 @@ function setup_ext4_volume {
 instance_type=$(curl http://169.254.169.254/latest/meta-data/instance-type 2> /dev/null)
 
 if [[ $instance_type == r3* ]]; then
-  setup_ext4_volume /dev/sdb /mnt
-  setup_ext4_volume /dev/sdc /mnt2
+  setup_ext4_volume /dev/sdb /mnt &
+  setup_ext4_volume /dev/sdc /mnt2 &
+  wait
 fi
 
 if [[ $instance_type == i2* ]]; then
-  setup_ext4_volume /dev/sdb /mnt
-  setup_ext4_volume /dev/sdc /mnt2
-  setup_ext4_volume /dev/sdd /mnt3
-  setup_ext4_volume /dev/sde /mnt4
-  setup_ext4_volume /dev/sdf /mnt5
-  setup_ext4_volume /dev/sdg /mnt6
-  setup_ext4_volume /dev/sdh /mnt7
-  setup_ext4_volume /dev/sdi /mnt8
+  setup_ext4_volume /dev/sdb /mnt &
+  setup_ext4_volume /dev/sdc /mnt2 &
+  setup_ext4_volume /dev/sdd /mnt3 &
+  setup_ext4_volume /dev/sde /mnt4 &
+  setup_ext4_volume /dev/sdf /mnt5 &
+  setup_ext4_volume /dev/sdg /mnt6 &
+  setup_ext4_volume /dev/sdh /mnt7 &
+  setup_ext4_volume /dev/sdi /mnt8 &
+  wait
 fi
 
 # Mount options to use for ext3 and xfs disks (the ephemeral disks
