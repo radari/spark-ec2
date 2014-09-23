@@ -61,7 +61,7 @@ template_vars = {
   "master_list": os.getenv("MASTERS"),
   "active_master": os.getenv("MASTERS").split("\n")[0],
   "slave_list": os.getenv("SLAVES"),
-  "hdfs_data_dirs": os.getenv("HDFS_DATA_DIRS"),
+  "hdfs_data_dirs": "/mnt/ephemeral-hdfs/data",
   "mapred_local_dirs": os.getenv("MAPRED_LOCAL_DIRS"),
   "spark_local_dirs": os.getenv("SPARK_LOCAL_DIRS"),
   "default_spark_mem": "%dg" % spark_gb,
