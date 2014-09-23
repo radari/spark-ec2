@@ -84,7 +84,7 @@ for node in $SLAVES $OTHER_MASTERS; do
   echo $node
   rsync -e "ssh $SSH_OPTS" -az /root/spark-ec2 $node:/root &
   scp $SSH_OPTS ~/.ssh/id_rsa $node:.ssh &
-  sleep 0.3
+  sleep 0.1
 done
 wait
 
