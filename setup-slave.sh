@@ -32,14 +32,14 @@ instance_type=$(curl http://169.254.169.254/latest/meta-data/instance-type 2> /d
 
 # Setup RAID 0
 if [[ $instance_type == r3.8xlarge ]]; then
-  mdadm --create --verbose -R /dev/md0 --level=stripe --raid-devices=8 \
+  mdadm --create --verbose -R /dev/md0 --level=stripe --raid-devices=2 \
     /dev/sdb /dev/sdc
   mkfs.ext4 -E lazy_itable_init=0,lazy_journal_init=0 /dev/md0
   mount -o 'defaults,noatime,nodiratime' /dev/md0 /mnt
 fi
 
 if [[ $instance_type == i2.4xlarge ]]; then
-  mdadm --create --verbose -R /dev/md0 --level=stripe --raid-devices=8 \
+  mdadm --create --verbose -R /dev/md0 --level=stripe --raid-devices=4 \
     /dev/sdb /dev/sdc /dev/sdd /dev/sde
   mkfs.ext4 -E lazy_itable_init=0,lazy_journal_init=0 /dev/md0
   mount -o 'defaults,noatime,nodiratime' /dev/md0 /mnt
