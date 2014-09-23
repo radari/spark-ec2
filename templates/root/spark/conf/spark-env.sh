@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
-export SPARK_LOCAL_DIRS="{{spark_local_dirs}}"
+#export SPARK_LOCAL_DIRS="{{spark_local_dirs}}"
+export SPARK_LOCAL_DIRS="/mnt"
 
 # Standalone cluster options
 export SPARK_MASTER_OPTS="{{spark_master_opts}}"
-export SPARK_WORKER_INSTANCES=1
-export SPARK_WORKER_CORES=16
-export SPARK_WORKER_MEMORY=40g
+export SPARK_WORKER_INSTANCES={{spark_worker_instances}}
+export SPARK_WORKER_CORES={{spark_worker_cores}}
+export SPARK_WORKER_MEMORY={{default_spark_mem}}
 
 export HADOOP_HOME="/root/ephemeral-hdfs"
 export SPARK_MASTER_IP={{active_master}}

@@ -33,8 +33,12 @@ system_ram_kb = min(slave_ram_kb, master_ram_kb)
 
 system_ram_mb = system_ram_kb / 1024
 # Leave some RAM for the OS, Hadoop daemons, and system caches
-if system_ram_mb > 100*1024:
+if system_ram_mb > 200*1024:
   spark_mb = system_ram_mb - 15 * 1024 # Leave 15 GB RAM
+  spark_gb = 80
+elif system_ram_mb > 100*1024:
+  spark_mb = system_ram_mb - 15 * 1024 # Leave 15 GB RAM
+  spark_gb = 40
 elif system_ram_mb > 60*1024:
   spark_mb = system_ram_mb - 10 * 1024 # Leave 10 GB RAM
 elif system_ram_mb > 40*1024:
@@ -60,15 +64,14 @@ template_vars = {
   "hdfs_data_dirs": os.getenv("HDFS_DATA_DIRS"),
   "mapred_local_dirs": os.getenv("MAPRED_LOCAL_DIRS"),
   "spark_local_dirs": os.getenv("SPARK_LOCAL_DIRS"),
-  "default_spark_mem": "%dm" % spark_mb,
+  "default_spark_mem": "%dg" % spark_gb,
   "spark_worker_instances": "%d" %  worker_instances,
   "spark_worker_cores": "%d" %  worker_cores,
   "spark_master_opts": os.getenv("SPARK_MASTER_OPTS", ""),
   "spark_version": os.getenv("SPARK_VERSION"),
   "shark_version": os.getenv("SHARK_VERSION"),
   "hadoop_major_version": os.getenv("HADOOP_MAJOR_VERSION"),
-  "java_home": os.getenv("JAVA_HOME"),
-  "default_tachyon_mem": "%dMB" % tachyon_mb,
+  "java_home": os.getenv("JAVA_HOME")
 }
 
 template_dir="/root/spark-ec2/templates"

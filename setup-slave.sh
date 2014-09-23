@@ -27,26 +27,49 @@ function setup_ext4_volume {
   mount -o "defaults,noatime,nodiratime" $device $mount_point
 }
 
-# Work around for R3 instances without pre-formatted ext3 disks
+# Get instance types
 instance_type=$(curl http://169.254.169.254/latest/meta-data/instance-type 2> /dev/null)
 
-if [[ $instance_type == r3* ]]; then
-  setup_ext4_volume /dev/sdb /mnt &
-  setup_ext4_volume /dev/sdc /mnt2 &
-  wait
+# Setup RAID 0
+if [[ $instance_type == r3.8xlarge ]]; then
+  mdadm --create --verbose -R /dev/md0 --level=stripe --raid-devices=8 \
+    /dev/sdb /dev/sdc
+  mkfs.ext4 -E lazy_itable_init=0,lazy_journal_init=0 /dev/md0
+  mount -o 'defaults,noatime,nodiratime' /dev/md0 /mnt
 fi
 
-if [[ $instance_type == i2* ]]; then
-  setup_ext4_volume /dev/sdb /mnt &
-  setup_ext4_volume /dev/sdc /mnt2 &
-  setup_ext4_volume /dev/sdd /mnt3 &
-  setup_ext4_volume /dev/sde /mnt4 &
-  setup_ext4_volume /dev/sdf /mnt5 &
-  setup_ext4_volume /dev/sdg /mnt6 &
-  setup_ext4_volume /dev/sdh /mnt7 &
-  setup_ext4_volume /dev/sdi /mnt8 &
-  wait
+if [[ $instance_type == i2.4xlarge ]]; then
+  mdadm --create --verbose -R /dev/md0 --level=stripe --raid-devices=8 \
+    /dev/sdb /dev/sdc /dev/sdd /dev/sde
+  mkfs.ext4 -E lazy_itable_init=0,lazy_journal_init=0 /dev/md0
+  mount -o 'defaults,noatime,nodiratime' /dev/md0 /mnt
 fi
+
+if [[ $instance_type == i2.8xlarge ]]; then
+  mdadm --create --verbose -R /dev/md0 --level=stripe --raid-devices=8 \
+    /dev/sdb /dev/sdc /dev/sdd /dev/sde /dev/sdf /dev/sdg /dev/sdh /dev/sdi
+  mkfs.ext4 -E lazy_itable_init=0,lazy_journal_init=0 /dev/md0
+  mount -o 'defaults,noatime,nodiratime' /dev/md0 /mnt
+fi
+
+
+# if [[ $instance_type == r3* ]]; then
+#   setup_ext4_volume /dev/sdb /mnt &
+#   setup_ext4_volume /dev/sdc /mnt2 &
+#   wait
+# fi
+
+# if [[ $instance_type == i2* ]]; then
+#   setup_ext4_volume /dev/sdb /mnt &
+#   setup_ext4_volume /dev/sdc /mnt2 &
+#   setup_ext4_volume /dev/sdd /mnt3 &
+#   setup_ext4_volume /dev/sde /mnt4 &
+#   setup_ext4_volume /dev/sdf /mnt5 &
+#   setup_ext4_volume /dev/sdg /mnt6 &
+#   setup_ext4_volume /dev/sdh /mnt7 &
+#   setup_ext4_volume /dev/sdi /mnt8 &
+#   wait
+# fi
 
 # Mount options to use for ext3 and xfs disks (the ephemeral disks
 # are ext3, but we use xfs for EBS volumes to format them faster)
