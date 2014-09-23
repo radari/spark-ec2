@@ -24,3 +24,5 @@ create_hadoop_dirs /mnt5
 create_hadoop_dirs /mnt6
 create_hadoop_dirs /mnt7
 create_hadoop_dirs /mnt8
+
+mkdir /var/run/hadoop-hdfs
