@@ -22,12 +22,12 @@
 
   <property>
     <name>dfs.client.read.shortcircuit</name>
-    <value>false</value>
+    <value>true</value>
   </property>
 
   <property>
     <name>dfs.client.read.shortcircuit.skip.checksum</name>
-    <value>false</value>
+    <value>true</value>
   </property>
 
   <property>
@@ -38,11 +38,6 @@
   <property>
     <name>dfs.client.file-block-storage-locations.timeout</name>
     <value>3000</value>
-  </property>
-
-  <property>
-    <name>fs.tachyon.impl</name>
-    <value>tachyon.hadoop.TFS</value>
   </property>
 
 </configuration>
